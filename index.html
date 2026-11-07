@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPUT Student Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="signin-overlay" id="signin-overlay">
+        <div class="signin-box">
+            <div class="signin-logo">🎓</div>
+
+            <h2>Welcome to CPUT Student Support</h2>
+            <p class="signin-text">
+                Please sign in to access your AI Student Assistant.
+            </p>
+
+            <label for="loginEmail">Student email</label>
+            <input type="email" id="loginEmail"
+                   placeholder="Email address">
+
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword"
+                   placeholder="Password">
+
+            <button class="signin-button" id="signin-button">
+                Sign In
+            </button>
+
+            <p id="loginMessage"></p>
+
+            <a href="forgot-password.html" class="forgot-password">
+                Forgot Password?
+            </a>
+
+            <p class="demo-text">
+                Don't have an account?
+                <a href="register.html">Create Account</a>
+            </p>
+
+            <p id="signin-error" class="signin-error"></p>
+
+            <p class="demo-text">
+                <em>Enter your student email and password.</em>
+            </p>
+        </div>
+    </div>
+
+    <div class="main-page" id="main-page">
+
+        <nav class="navbar home-navbar">
+
+            <div class="logo home-logo">
+                <span class="shield-logo">♢</span>
+                <span>Uni learn support</span>
+            </div>
+
+            <div class="nav-links home-nav-links">
+                <a href="#home">Home</a>
+                <a href="#services">Services</a>
+                <a href="#faqs">FAQs</a>
+                <a href="#about">About us</a>
+                <a href="#contact">Contact</a>
+
+                <button type="button"
+                        class="top-chat-button"
+                        id="top-chat-button">
+                    Start chat
+                </button>
+            </div>
+        </nav>
+
+        <section class="hero home-hero" id="home">
+
+            <div class="hero-text home-hero-text">
+
+                <h1>
+                    Hello! <span class="home-wave">👋</span>
+                    <br>
+                    I'm UniBot
+                </h1>
+
+                <p class="subtitle home-subtitle">
+                    Your AI powered assistance for all student enquiries.
+                </p>
+
+                <div class="features home-features">
+                    <div class="feature">
+                        <span>✓</span>
+                        Get instant support
+                    </div>
+
+                    <div class="feature">
+                        <span>✓</span>
+                        24/7 Student Support
+                    </div>
+
+                    <div class="feature">
+                        <span>✓</span>
+                        Accurate &amp; Reliable information
+                    </div>
+
+                    <div class="feature">
+                        <span>✓</span>
+                        Your data is safe with us
+                    </div>
+                </div>
+
+                <button type="button"
+                        class="start-chat-button home-start-button"
+                        id="start-chat-button">
+                    <span>▱</span>
+                    Start chat
+                </button>
+
+            </div>
+
+            <div class="hero-image home-hero-image">
+
+                <div class="floating-chat">▱</div>
+                <div class="floating-question">?</div>
+
+                <div class="home-robot">
+                    <div class="robot-cap">🎓</div>
+                    <div class="robot-head">
+                        <div class="robot-eye"></div>
+                    </div>
+                    <div class="robot-arm robot-arm-left"></div>
+                    <div class="robot-arm robot-arm-right"></div>
+                    <div class="robot-leg robot-leg-left"></div>
+                    <div class="robot-leg robot-leg-right"></div>
+                </div>
+
+                <div class="floating-books">📚</div>
+                <div class="floating-globe">🌐</div>
+
+            </div>
+        </section>
+
+        <section class="chat-section" id="chat-section">
+
+            <div class="chat-container">
+
+                <div class="chat-header">
+                    <div>
+                        <strong>🎓 CPUT Student Support</strong>
+                        <br>
+                        <span class="online">● Online</span>
+                    </div>
+                </div>
+
+                <div class="chat-body" id="chat-body">
+                    <div class="message bot-message">
+                        <div class="bot-icon">🤖</div>
+                        <div class="message-content">
+                            <strong>UniBot</strong>
+                            <p>Hello! 👋 How can I help you today?</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="user-input"
+                           placeholder="Type your question here...">
+                    <button type="button" id="sendButton">➤</button>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

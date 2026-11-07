@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniBot | CPUT Student Support</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="student-chat-page">
+
+    <div class="student-chat-layout">
+
+        <aside class="chat-sidebar">
+
+            <div class="sidebar-brand">
+                <div class="brand-robot">🤖</div>
+                <div>
+                    <h2>uniBot</h2>
+                    <p>AI Student support</p>
+                </div>
+            </div>
+
+            <button class="new-chat-button" id="newChatButton">
+                <span>＋</span> New chat
+            </button>
+
+            <div class="suggested-heading">
+                <span>☼</span> Suggested questions
+            </div>
+
+            <div class="suggested-list">
+                <button class="suggested-question"
+                    data-question="When does registration close?">
+                    When does registration close?
+                    <span>›</span>
+                </button>
+
+                <button class="suggested-question"
+                    data-question="How do I apply for NSFAS?">
+                    How do I apply for NSFAS?
+                    <span>›</span>
+                </button>
+
+                <button class="suggested-question"
+                    data-question="What documents do I need for registration?">
+                    What documents do I need for registration?
+                    <span>›</span>
+                </button>
+
+                <button class="suggested-question"
+                    data-question="How do I apply for accommodation?">
+                    How do I apply for accommodation?
+                   <span></span>
+            </button>
+
+            <button class="suggested-question"
+                data-question="I cannot log in on my student portal, what must I do?" >
+                I cannot log in on my student portal
+                <span></span>
+            </button>
+
+            <button class="suggested-question"
+                data-question="How do I register at CPUT?">
+                How do I register at CPUT?
+                <span></span>
+
+            <button class="suggested-question"
+                data-question="What documents do I need for registration?"></button>
+                What documents do I need for registration?
+                <span></span>
+                
+            </button>
+
+                <button class="suggested-question"
+                    data-question="Where can I find my university fees?">
+                    Where can I find my university fees?
+                    <span>›</span>
+                </button>
+            </div>
+
+            <div class="sidebar-bottom">
+                <button id="feedbackButton" class="feedback-button">
+                    ★ &nbsp; Give Feedback
+                </button>
+            </div>
+
+        </aside>
+
+        <main class="chat-main">
+
+            <header class="chat-topbar">
+                <div class="chat-page-title">Student Chat</div>
+
+                <button id="clearChatButton" class="clear-chat-button">
+                    Clear chat &nbsp; ♜
+                </button>
+            </header>
+
+            <section class="chat-messages" id="messages"
+                aria-live="polite">
+
+                <div class="message bot-message">
+                    <div class="bot-avatar">🤖</div>
+
+                    <div class="bot-bubble">
+                        <p>Hello! 👋 Welcome to CPUT Student Support.
+                        How can I help you today?</p>
+                        <span class="message-time"></span>
+                    </div>
+                </div>
+
+            </section>
+
+            <form class="chat-composer" id="chatForm">
+
+                <button type="button" class="composer-icon"
+                    id="emojiButton" title="Emoji">☻</button>
+
+                <input
+                    type="text"
+                    id="messageInput"
+                    placeholder="Type your message here"
+                    autocomplete="off"
+                    aria-label="Type your message"
+                >
+
+                <label for="attachmentInput" class="composer-icon"
+                    title="Attach a file">♧</label>
+                <input type="file" id="attachmentInput" hidden>
+
+                <button type="button" class="composer-icon"
+                    id="cameraButton" title="Camera">◎</button>
+
+                <button type="submit" id="sendButton"
+                    class="send-message-button"
+                    aria-label="Send message">➤</button>
+
+            </form>
+
+        </main>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
