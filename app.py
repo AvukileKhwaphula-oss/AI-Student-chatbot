@@ -17,7 +17,9 @@ from Database import (
 
 app = Flask(__name__, static_folder=".")
 
-app.secret_key = "unibot-secret-key-change-this"
+import os
+
+app.secret_key = os.environ.get("SECRET_KEY")
 
 create_database()
 
@@ -245,9 +247,5 @@ def register():
     })
 
 if __name__ == "__main__":
-    app.run(
-        debug=True,
-        host="127.0.0.1",
-        port=5000
-
-    )
+    app.run(debug=False)
+    
