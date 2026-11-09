@@ -43,33 +43,43 @@ def files(filename):
 
 @app.post("/api/login")
 def login():
-    data = request.get_json(silent=True) or {}
+    try:
+        data = request.get_json(silent=True) or {}
 
-    email = str(data.get("email", "")).strip()
-    password = str(data.get("password", ""))
+        email = str(data.get("email", "")).strip()
+        password = str(data.get("password", ""))
 
-    if not email or not password:
+        if not email or not password:
+            return jsonify({
+                "success": False,
+                "message": "Email and password are required."
+            }), 400
+
+        student = verify_student(email, password)
+
+        if student is None:
+            return jsonify({
+                "success": False,
+                "message": "Incorrect email or password."
+            }), 401
+
+        session["student_id"] = student["id"]
+        session["student_number"] = student["student_number"]
+        session["email"] = student["email"]
+
+        return jsonify({
+            "success": True,
+            "message": "Login successful."
+        }), 200
+
+    except Exception:
+        app.logger.exception("LOGIN ERROR")
+
         return jsonify({
             "success": False,
-            "message": "Email and password are required."
-        }), 400
+            "message": "A server error occurred during login. Please try again."
+        }), 500
 
-    student = verify_student(email, password)
-
-    if student is None:
-        return jsonify({
-            "success": False,
-            "message": "Incorrect email or password."
-        }), 401
-
-    session["student_id"] = student["id"]
-    session["student_number"] = student["student_number"]
-    session["email"] = student["email"]
-
-    return jsonify({
-        "success": True,
-        "message": "Login successful."
-    })
 
 @app.post("/api/logout")
 def logout():
