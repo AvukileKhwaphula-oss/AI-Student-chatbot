@@ -1,81 +1,77 @@
-import sqlite3
+
+import os
+import psycopg2
+from psycopg2.extras import RealDictCursor
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-from pathlib import Path
-
-DATABASE = str(
-    Path(__file__).resolve().parent / "students.db"
-)
-
-
 def get_connection():
+    database_url = os.environ.get("DATABASE_URL")
 
-    connection = sqlite3.connect(DATABASE)
+    if not database_url:
+        raise RuntimeError(
+            "DATABASE_URL environment variable is not configured."
+        )
 
-    connection.row_factory = sqlite3.Row
-
-    return connection
+    return psycopg2.connect(database_url)
 
 
 def create_database():
 
     connection = get_connection()
 
-    cursor = connection.cursor()
+    try:
+        cursor = connection.cursor()
 
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS students (
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS students (
+                id SERIAL PRIMARY KEY,
+                student_number TEXT UNIQUE NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
 
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+        connection.commit()
+        cursor.close()
 
-            student_number TEXT UNIQUE NOT NULL,
-
-            email TEXT UNIQUE NOT NULL,
-
-            password TEXT NOT NULL,
-
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-
-        )
-    """)
-
-    connection.commit()
-
-    connection.close()
+    finally:
+        connection.close()
 
 
 def create_student(student_number, email, password):
 
     connection = get_connection()
 
-    cursor = connection.cursor()
-
-    hashed_password = generate_password_hash(password)
-
     try:
+        cursor = connection.cursor()
+
+        hashed_password = generate_password_hash(password)
 
         cursor.execute("""
             INSERT INTO students
             (student_number, email, password)
-
-            VALUES (?, ?, ?)
+            VALUES (%s, %s, %s)
+            ON CONFLICT DO NOTHING
+            RETURNING id
         """, (
             student_number,
             email,
             hashed_password
         ))
 
+        student = cursor.fetchone()
+
         connection.commit()
 
-        return True
+        return student is not None
 
-    except sqlite3.IntegrityError:
-
-        return False
+    except Exception:
+        connection.rollback()
+        raise
 
     finally:
-
         connection.close()
 
 
@@ -83,56 +79,56 @@ def verify_student(email, password):
 
     connection = get_connection()
 
-    cursor = connection.cursor()
+    try:
+        cursor = connection.cursor(
+            cursor_factory=RealDictCursor
+        )
 
-    cursor.execute("""
-        SELECT *
-        FROM students
-        WHERE email = ?
-    """, (email,))
+        cursor.execute("""
+            SELECT *
+            FROM students
+            WHERE email = %s
+        """, (email,))
 
-    student = cursor.fetchone()
+        student = cursor.fetchone()
 
-    connection.close()
+        if student is None:
+            return None
 
-
-    if student is None:
-
-        return None
-
-
-    if check_password_hash(student["password"], password):
-
-        return student
+        if check_password_hash(student["password"], password):
+            return student
 
         return None
+
+    finally:
+        connection.close()
 
 
 def reset_password(email, new_password):
 
     connection = get_connection()
 
-    cursor = connection.cursor()
+    try:
+        cursor = connection.cursor()
 
-    hashed_password = generate_password_hash(
-        new_password
-    )
+        hashed_password = generate_password_hash(new_password)
 
-    cursor.execute("""
-        UPDATE students
+        cursor.execute("""
+            UPDATE students
+            SET password = %s
+            WHERE email = %s
+        """, (
+            hashed_password,
+            email
+        ))
 
-        SET password = ?
+        connection.commit()
 
-        WHERE email = ?
-    """, (
-        hashed_password,
-        email
-    ))
+        return cursor.rowcount > 0
 
-    connection.commit()
+    except Exception:
+        connection.rollback()
+        raise
 
-    changed = cursor.rowcount > 0
-
-    connection.close()
-
-    return changed
+    finally:
+        connection.close()
